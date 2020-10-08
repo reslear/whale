@@ -1,7 +1,7 @@
 {
   "name": "axios-log",
   "version": "0.0.1",
-  "description": "> TODO: description",
+  "description": "description",
   "author": "reslear <reslear@gmail.com>",
   "homepage": "https://github.com/reslear/whale#readme",
   "license": "ISC",
@@ -22,5 +22,6 @@
   },
   "bugs": {
     "url": "https://github.com/reslear/whale/issues"
-  }
+  },
+  "gitHead": "f8dbcf0bdd3ecba977a47acfe97d38c5b6ffe5ae"
 }
