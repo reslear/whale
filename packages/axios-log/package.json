@@ -1,27 +1,32 @@
 {
-  "name": "axios-log",
+  "name": "@reslear/axios-log",
   "version": "0.0.1",
   "description": "description",
   "author": "reslear <reslear@gmail.com>",
   "homepage": "https://github.com/reslear/whale#readme",
   "license": "ISC",
-  "main": "lib/axios-log.js",
-  "directories": {
-    "lib": "lib",
-    "test": "__tests__"
-  },
+  "main": "dist/axios-log.js",
+  "types": "dist/index.d.ts",
   "files": [
-    "lib"
+    "dist"
   ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/reslear/whale.git"
   },
   "scripts": {
-    "test": "echo \"Error: run tests from root\" && exit 1"
+    "build": "tsc",
+    "prepare": "npm run build"
   },
   "bugs": {
     "url": "https://github.com/reslear/whale/issues"
   },
-  "gitHead": "f8dbcf0bdd3ecba977a47acfe97d38c5b6ffe5ae"
+  "devDependencies": {
+    "axios": "^0.20.0",
+    "chalk": "^4.1.0",
+    "typescript": "^4.0.3"
+  },
+  "dependencies": {
+    "@types/chalk": "^2.2.0"
+  }
 }
