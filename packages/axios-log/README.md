@@ -2,10 +2,7 @@
 
 Axios interceptor logger for requests query parameters
 
----
-
 <img src="https://raw.githubusercontent.com/reslear/whale/main/packages/axios-log/media/thumb.png" width="584">
-___
 
 - zero config
 - lightweight
