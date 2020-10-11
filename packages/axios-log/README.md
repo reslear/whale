@@ -1,9 +1,10 @@
-# `@reslear/axios-log`
+# @reslear/axios-log
 
 Axios interceptor logger for requests query parameters
-👍 zero config
-👍 lightweight
-👍 use [chalk](https://github.com/chalk/chalk)
+
+- 👍 zero config
+- 👍 lightweight
+- 👍 use [chalk](https://github.com/chalk/chalk)
 
 ## Usage
 
