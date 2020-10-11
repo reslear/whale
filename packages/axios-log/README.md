@@ -1,11 +1,12 @@
-# `axios-log`
+# `@reslear/axios-log`
 
-> TODO: description
+Axios interceptor logger for requests query parameters
 
 ## Usage
 
-```
-import axiosLog from '@reslear/axios-log';
+```ts
+import axios from "axios";
+import axiosLog from "@reslear/axios-log";
 
-// TODO: DEMONSTRATE API
+axios.interceptors.request.use(axiosLog);
 ```
