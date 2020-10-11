@@ -15,4 +15,4 @@ import axiosLog from "@reslear/axios-log";
 axios.interceptors.request.use(axiosLog);
 ```
 
-<img src="https://raw.githubusercontent.com/reslear/whale/main/packages/axios-log/media/thumb.png" style="max-width:584px"/>
+<img src="https://raw.githubusercontent.com/reslear/whale/main/packages/axios-log/media/thumb.png" width="584">
