@@ -1,23 +1,21 @@
 {
   "compilerOptions": {
+    "target": "es5",
+    "module": "CommonJS",
     "declaration": true,
-    "strictNullChecks": true,
-    "target": "ES2018",
-    "module": "ESNext",
-    "moduleResolution": "Node",
-    "lib": ["ESNext", "ESNext.AsyncIterable", "DOM"],
+    "sourceMap": false,
     "esModuleInterop": true,
-    "allowJs": true,
-    "sourceMap": true,
-    "strict": true,
-    "noEmit": true,
-    "baseUrl": ".",
+    "moduleResolution": "node",
+
+    "lib": ["ESNext", "DOM"],
+
+    /* "baseUrl": ".",
     "paths": {
       "~/*": ["./*"],
       "@/*": ["./*"]
-    },
-
+    }, 
     "rootDir": "src",
+    */
     "outDir": "dist"
   },
   "include": ["src"],

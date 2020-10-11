@@ -5,7 +5,7 @@
 ## Usage
 
 ```
-const axiosLog = require('axios-log');
+import axiosLog from '@reslear/axios-log';
 
 // TODO: DEMONSTRATE API
 ```
