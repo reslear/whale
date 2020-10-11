@@ -2,9 +2,13 @@
 
 Axios interceptor logger for requests query parameters
 
-- 👍 zero config
-- 👍 lightweight
-- 👍 use [chalk](https://github.com/chalk/chalk)
+---
+
+<img src="https://raw.githubusercontent.com/reslear/whale/main/packages/axios-log/media/thumb.png" width="584">
+___
+- zero config
+- lightweight
+- use [chalk](https://github.com/chalk/chalk)
 
 ## Usage
 
@@ -14,5 +18,3 @@ import axiosLog from "@reslear/axios-log";
 
 axios.interceptors.request.use(axiosLog);
 ```
-
-<img src="https://raw.githubusercontent.com/reslear/whale/main/packages/axios-log/media/thumb.png" width="584">
