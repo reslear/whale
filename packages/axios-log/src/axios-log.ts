@@ -1,23 +1,24 @@
 import { AxiosRequestConfig } from "axios";
 import chalk from "chalk";
 
-export const axiosLog = (request: AxiosRequestConfig) => {
-  const params = request.params
-    ? Object.entries(request.params)
+export const axiosLog = (config: AxiosRequestConfig) => {
+  let params = config.params
+    ? Object.entries(config.params)
         .map(([key, val]) => `${key}${chalk.gray("=")}${val}`)
         .join(chalk.yellow("&"))
     : "";
-  const time = new Date().toLocaleTimeString();
 
-  const base = request.baseURL ?? "";
+  let time = new Date().toLocaleTimeString();
+  let method = config.method ?? "";
+  let url = new URL(config.url, config.baseURL).href;
+
+  // colorize
+  method = method.toUpperCase();
+  params = params ? `${chalk.yellow("?")}${params}` : "";
 
   console.log(
-    `${chalk.green("[axios]")} ${time} ${chalk.yellow(
-      (request.method || "").toUpperCase()
-    )} ${chalk.cyan(`${base}${request.url}`)}${
-      params ? `${chalk.yellow("?")}${params}` : ""
-    }`.trim()
+    chalk`{green [axios]} ${time} {yellow ${method}} {cyan ${url}}${params}`
   );
 
-  return request;
+  return config;
 };
