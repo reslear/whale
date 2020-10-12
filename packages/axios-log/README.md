@@ -12,7 +12,7 @@ Axios interceptor logger for requests query parameters
 
 ```ts
 import axios from "axios";
-import axiosLog from "@reslear/axios-log";
+import { axiosLog } from "@reslear/axios-log";
 
 axios.interceptors.request.use(axiosLog);
 ```
