@@ -25,3 +25,5 @@ export const axiosLog = (config: AxiosRequestConfig) => {
 
   return config;
 };
+
+export default { axiosLog };
