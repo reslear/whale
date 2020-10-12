@@ -1,6 +1,6 @@
 {
   "name": "@reslear/axios-log",
-  "version": "0.0.7",
+  "version": "0.0.9",
   "description": "Axios interceptor logger for requests query parameters",
   "author": "reslear <reslear@gmail.com>",
   "homepage": "https://github.com/reslear/whale#readme",
