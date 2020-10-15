@@ -6,16 +6,7 @@
     "sourceMap": false,
     "esModuleInterop": true,
     "moduleResolution": "node",
-
     "lib": ["ESNext", "DOM"],
-
-    /* "baseUrl": ".",
-    "paths": {
-      "~/*": ["./*"],
-      "@/*": ["./*"]
-    }, 
-    "rootDir": "src",
-    */
     "outDir": "dist"
   },
   "include": ["src"],

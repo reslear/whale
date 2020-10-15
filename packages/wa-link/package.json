@@ -1,6 +1,6 @@
 {
   "name": "@reslear/whatsapp-link",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "whats app link generator for send message",
   "keywords": [
     "whatsapp",
@@ -12,11 +12,8 @@
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "directories": {
-    "src": "src"
-  },
   "files": [
-    "src"
+    "dist"
   ],
   "publishConfig": {
     "access": "public"
