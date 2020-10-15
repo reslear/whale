@@ -6,7 +6,6 @@
     "sourceMap": false,
     "esModuleInterop": true,
     "moduleResolution": "node",
-
     "lib": ["ESNext", "DOM"],
     "outDir": "dist"
   },
