@@ -1,0 +1,36 @@
+{
+  "name": "@reslear/whatsapp-link",
+  "version": "0.0.3",
+  "description": "whats app link geneartor for send message",
+  "keywords": [
+    "whatsapp",
+    "link",
+    "api"
+  ],
+  "author": "reslear <reslear@gmail.com>",
+  "homepage": "https://github.com/reslear/whale#readme",
+  "license": "ISC",
+  "main": "dist/whatsapp-link.js",
+  "types": "dist/whatsapp-link.js.d.ts",
+  "directories": {
+    "src": "src"
+  },
+  "files": [
+    "lib"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reslear/whale.git"
+  },
+  "scripts": {
+    "build": "rm -rf dist && tsc -p .",
+    "ver": "npm version patch",
+    "deploy": "npm run build && npm run ver && npm publish"
+  },
+  "bugs": {
+    "url": "https://github.com/reslear/whale/issues"
+  }
+}
