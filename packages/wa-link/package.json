@@ -1,6 +1,6 @@
 {
   "name": "@reslear/whatsapp-link",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "description": "whats app link generator for send message",
   "keywords": [
     "whatsapp",
@@ -28,8 +28,7 @@
   "scripts": {
     "clean": "rm -rf dist",
     "bundle": "tsup src/index.ts --dts --legacy-output",
-    "version": "npm version patch",
-    "deploy": "npm run bundle && npm run version && npm publish"
+    "deploy": "npm run clean && npm run bundle && npm version patch && npm publish"
   },
   "bugs": {
     "url": "https://github.com/reslear/whale/issues"
