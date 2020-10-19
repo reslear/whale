@@ -1,6 +1,6 @@
 {
   "name": "@reslear/axios-log",
-  "version": "0.0.11",
+  "version": "0.0.14",
   "description": "Axios interceptor logger for requests query parameters",
   "author": "reslear <reslear@gmail.com>",
   "homepage": "https://github.com/reslear/whale#readme",
@@ -16,7 +16,7 @@
   },
   "scripts": {
     "clean": "rm -rf dist",
-    "bundle": "tsup src/index.ts --dts --legacy-output",
+    "bundle": "tsc -p .",
     "deploy": "npm run clean && npm run bundle && npm version patch && npm publish"
   },
   "bugs": {
