@@ -34,7 +34,7 @@
     "url": "https://github.com/reslear/whale/issues"
   },
   "devDependencies": {
-    "tsup": "3.7.1",
+    "tsup": "3.8.0",
     "typescript": "4.1.2"
   }
 }
