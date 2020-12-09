@@ -1,0 +1,33 @@
+{
+  "name": "@reslear/social-share",
+  "version": "0.0.2",
+  "description": "social share controller",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reslear/whale.git"
+  },
+  "scripts": {
+    "clean": "rm -rf dist",
+    "bundle": "tsc -p .",
+    "deploy": "npm run clean && npm run bundle && npm version patch && npm publish --access public"
+  },
+  "keywords": [
+    "share",
+    "facebook",
+    "twitter",
+    "vk",
+    "telergam",
+    "instagram"
+  ],
+  "author": "reslear <reslear@gmail.com>",
+  "homepage": "https://github.com/reslear/whale#readme",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "4.0.3"
+  }
+}

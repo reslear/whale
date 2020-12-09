@@ -1,6 +1,6 @@
 {
   "name": "@reslear/whatsapp-link",
-  "version": "0.0.6",
+  "version": "0.0.9",
   "description": "whats app link generator for send message",
   "keywords": [
     "whatsapp",
@@ -24,7 +24,7 @@
   },
   "scripts": {
     "clean": "rm -rf dist",
-    "bundle": "tsup src/index.ts --dts --legacy-output",
+    "bundle": "tsc -p .",
     "deploy": "npm run clean && npm run bundle && npm version patch && npm publish"
   },
   "bugs": {
