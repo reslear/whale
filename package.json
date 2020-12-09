@@ -1,8 +1,12 @@
 {
-  "name": "whale.by",
+  "name": "@reslear/whale",
   "devDependencies": {},
   "dependencies": {},
   "workspaces": [
     "./packages/*"
-  ]
+  ],
+  "engines": {
+    "node": ">=12",
+    "npm": ">=7"
+  }
 }
