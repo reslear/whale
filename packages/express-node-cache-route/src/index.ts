@@ -8,6 +8,14 @@ export interface IOptions {
   prefix?: string;
 }
 
+enum EErrors {
+  Password = "err password, sorry",
+}
+
+const checkPassword = (password: any, p: any) => {
+  return !password || (password && p && password === p);
+};
+
 export const cacheRoute = ({
   password,
   router,
@@ -16,11 +24,44 @@ export const cacheRoute = ({
 }: IOptions = {}) => {
   const expressRouter = router ?? express.Router();
 
+  const url = `/${prefix}`;
+  const isNodeCache = cache
+    ? cache.constructor.name === "NodeCache"
+    : undefined;
+
   // routes
-  expressRouter.get(`/${prefix}`, (req: Request, res: Response) => {
-    res.send(`
-      cache ok!
-    `);
+  expressRouter.get(url, (req: Request, res: Response) => {
+    try {
+      const response = cache?.getStats();
+
+      if (checkPassword(password, req.query.p)) {
+        res.send(`
+        <pre>${JSON.stringify(response, null, 2)}</pre>
+        <form type="post" action="${url}">
+          <input type="hidden" value="${password}"/>
+          <button>Clean Cache</button>
+        </form>
+      `);
+      } else {
+        res.send(EErrors.Password);
+      }
+    } catch (e) {
+      res.send(e.response);
+    }
+  });
+
+  expressRouter.post(url, (req: Request, res: Response) => {
+    try {
+      if (!checkPassword(password, req.query.p)) {
+        throw new Error(EErrors.Password);
+      }
+
+      if (isNodeCache) {
+        const response = cache?.flushAll();
+      }
+    } catch (e) {
+      res.send(e.response);
+    }
   });
 
   return expressRouter;

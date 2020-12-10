@@ -1,7 +1,10 @@
+import NodeCache from "node-cache";
 import express, { Request, Response, NextFunction } from "express";
 import createError from "http-errors";
 import routes from "./routes";
 import { cacheRoute } from "../src/index";
+
+const nc = new NodeCache();
 
 // Create express instance
 const app = express().disable("x-powered-by");
@@ -11,7 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // use routes
-app.use(cacheRoute({ password: "123" }));
+app.use(cacheRoute({ password: "123", cache: nc }));
 app.use(routes);
 
 // default 404
