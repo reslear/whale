@@ -35,12 +35,16 @@ export const cacheRoute = ({
       const response = cache?.getStats();
 
       if (checkPassword(password, req.query.p)) {
-        res.send(`
-        <pre>${JSON.stringify(response, null, 2)}</pre>
+        res.type("text/html").send(`<!DOCTYPE html>
+<html>
+        <title>Cache</title><body>
+        000<pre>${JSON.stringify(response, null, 2)}</pre>
+        123
         <form type="post" action="${url}">
           <input type="hidden" value="${password}"/>
           <button>Clean Cache</button>
-        </form>
+        </form></body>
+</html>
       `);
       } else {
         res.send(EErrors.Password);
