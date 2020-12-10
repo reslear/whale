@@ -1,7 +1,7 @@
 import express, { Request, Response, NextFunction } from "express";
 import createError from "http-errors";
 import routes from "./routes";
-import { cacheRoute } from "@reslear/express-node-cache";
+import { cacheRoute } from "../src/index";
 
 // Create express instance
 const app = express().disable("x-powered-by");
@@ -11,8 +11,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // use routes
+app.use(cacheRoute({ password: "123" }));
 app.use(routes);
-app.use(cacheRoute);
 
 // default 404
 app.use((req: Request, res: Response, next: NextFunction) => {

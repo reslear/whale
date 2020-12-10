@@ -1,7 +1,7 @@
 {
-  "name": "@reslear/express-node-cache",
+  "name": "@reslear/express-node-cache-route",
   "version": "1.0.0",
-  "description": "",
+  "description": "Express route for visual manage node-cache (flush, statistics, list keys, ...) ",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",

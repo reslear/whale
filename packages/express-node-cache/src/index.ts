@@ -1,13 +1,31 @@
-import express, { Request, Response, NextFunction } from "express";
+import express, { Router, Request, Response, NextFunction } from "express";
+import NodeCache from "node-cache";
 
-export const cacheRoute = () => {
-  const router = express.Router();
+export interface IOptions {
+  cache?: NodeCache;
+  password?: string | boolean;
+  router?: Router;
+  prefix?: string;
+}
+
+export const cacheRoute = ({
+  password,
+  router,
+  cache,
+  prefix = "_cache",
+}: IOptions = {}) => {
+  const expressRouter = router ?? express.Router();
 
   // routes
-  router.get("/_cache", (req: Request, res: Response) => {
+  expressRouter.get(`/${prefix}`, (req: Request, res: Response) => {
     res.send(`
-        cache ok!
-      `);
+      cache ok!
+    `);
   });
-  return router;
+
+  return expressRouter;
+};
+
+export default {
+  cacheRoute,
 };
