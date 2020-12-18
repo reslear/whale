@@ -1,42 +1,31 @@
-export interface socialShareOptions {
+import { socialSettings } from "./presets/social";
+
+export interface ISocialOptions {
   title?: string;
   description?: string;
 }
 
+export const share = (name: string, options: ISocialOptions) => {};
+
 export const socialShare = (
-  name: "vk" | "twitter" | "facebook",
-  { title = "", description = "" }: socialShareOptions = {}
+  name: string,
+  { title = "", description = "" }: ISocialOptions = {}
 ): void => {
   const url = window.location.href;
 
-  const socialDataList = {
-    vk: {
-      url: "https://vk.com/share.php",
-      params: { url, title },
-      w: 550,
-      h: 420,
-    },
-    twitter: {
-      url: "https://twitter.com/share",
-      params: { url, text: description },
-      w: 550,
-      h: 420,
-    },
-    facebook: {
-      url: "https://www.facebook.com/sharer/sharer.php",
-      params: { u: url },
-      w: 800,
-      h: 520,
-    },
-  };
+  let params = { url, description, title };
 
-  const socialData = socialDataList[name];
+  let socialDataList = socialSettings.map((item) => {
+    const result = item;
+    result.params = Object.assign(item.params, params);
+    return result;
+  });
+
+  const socialData = socialDataList.find((item) => item.key === name);
   if (!socialData) return;
 
-  const socialQuery = new URLSearchParams(socialData.params as any).toString();
+  const socialQuery = new URLSearchParams(socialData.params).toString();
   const socialUrl = `${socialData.url}?${socialQuery}`;
-
-  console.log(socialUrl);
 
   let featuresWindow = {
     scrollbars: 1,
@@ -51,7 +40,7 @@ export const socialShare = (
   };
 
   let featuresWindowQuery = Object.keys(featuresWindow)
-    .map((key: any) => `${key}=${(featuresWindow as any)[key]}`)
+    .map((key) => `${key}=${featuresWindow[key]}`)
     .join(",");
 
   window.open(socialUrl, "Share", featuresWindowQuery);
