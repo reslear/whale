@@ -20,5 +20,8 @@ Strapi simple api methods _(like deprecated strapi-sdk-javascript)_
 - Get All
 - Get One
 - Get Count
+- Create
+- Update
+- Delete
 - Filters
 - etc..
