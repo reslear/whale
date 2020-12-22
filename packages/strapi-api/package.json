@@ -1,0 +1,14 @@
+{
+  "name": "strapi-api",
+  "version": "0.0.1",
+  "description": "strapi simple api methods",
+  "main": "dist/index.js",
+  "scripts": {},
+  "keywords": [
+    "strapi",
+    "axios",
+    "strapi-sdk-javascript"
+  ],
+  "author": "reslear",
+  "license": "MIT"
+}
