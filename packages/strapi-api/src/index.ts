@@ -1,5 +1,4 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
-import { axiosLog } from "@reslear/axios-log";
 import qs from "qs";
 
 export interface StrapiOptions {
@@ -27,15 +26,7 @@ export class StrapiApi {
     this.identifier = login;
     this.password = password;
 
-    if (process.env.NODE_ENV !== "production") {
-      this.initAxiosLogger();
-    }
-
     this.initAutoRefreshToken();
-  }
-
-  initAxiosLogger() {
-    this.axios.interceptors.request.use(axiosLog);
   }
 
   setAuthHeader() {
