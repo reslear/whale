@@ -1,29 +1,41 @@
 import { AxiosRequestConfig } from "axios";
 import chalk from "chalk";
 
-export const axiosLog = (config: AxiosRequestConfig) => {
-  let params = config.params
-    ? Object.entries(config.params)
-        .map(([key, val]) => `${key}${chalk.gray("=")}${val}`)
-        .join(chalk.yellow("&"))
-    : "";
+export interface INiceLogOptions {
+  prefix?: string;
+}
 
-  // TODO: refactor
-  let urlParams = new URLSearchParams(config.params);
+export const niceLog = (options: INiceLogOptions | AxiosRequestConfig) => {
+  // is axios
+  if ("method" in options) {
+  } else {
+    // is options
+  }
 
-  let time = new Date().toLocaleTimeString();
-  let method = config.method ?? "";
-  let url = new URL(config.url, config.baseURL).href;
+  return (config: AxiosRequestConfig) => {
+    let params = config.params
+      ? Object.entries(config.params)
+          .map(([key, val]) => `${key}${chalk.gray("=")}${val}`)
+          .join(chalk.yellow("&"))
+      : "";
 
-  // colorize
-  method = method.toUpperCase();
-  params = params ? `${chalk.yellow("?")}${params}` : "";
+    // TODO: refactor
+    let urlParams = new URLSearchParams(config.params);
 
-  console.log(
-    chalk`{green [axios]} ${time} {yellow ${method}} {cyan ${url}}${params}`
-  );
+    let time = new Date().toLocaleTimeString();
+    let method = config.method ?? "";
+    let url = new URL(config.url, config.baseURL).href;
 
-  return config;
+    // colorize
+    method = method.toUpperCase();
+    params = params ? `${chalk.yellow("?")}${params}` : "";
+
+    console.log(
+      chalk`{green [axios]} ${time} {yellow ${method}} {cyan ${url}}${params}`
+    );
+
+    return config;
+  };
 };
 
-export default { axiosLog };
+export default niceLog;
