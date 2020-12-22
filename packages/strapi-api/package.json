@@ -16,7 +16,6 @@
     "dev": "ts-node playground/server.ts",
     "build": "tsup src/index.ts --format esm,cjs --dts --external express,axios,qs",
     "clean": "rm -rf dist",
-    "bundle": "tsc -p .",
     "deploy": "npm run clean && npm run build && npm version patch && npm publish --access public"
   },
   "keywords": [
