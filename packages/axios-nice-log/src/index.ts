@@ -1,5 +1,6 @@
-import axios, { AxiosRequestConfig } from "axios";
+import { AxiosRequestConfig } from "axios";
 import chalk from "chalk";
+import chalkPipe from "chalk-pipe";
 
 export type keys =
   | "prefix"
@@ -14,15 +15,15 @@ export type fields = Partial<Record<keys, string>>;
 
 export interface INiceLogOptions {
   prefix?: string;
-  colors?: fields;
+  styles?: fields;
   template?: string;
   templates?: fields;
-  logger?: (value: string) => void;
+  logger?: (...data: any[]) => void;
 }
 
 let defaults: INiceLogOptions = {
   prefix: "axios",
-  colors: {
+  styles: {
     prefix: "green",
     time: "reset",
     method: "yellow",
@@ -100,21 +101,28 @@ export class NiceLog {
   /**
    * @see issue https://github.com/chalk/chalk/issues/258
    * */
-  chalkTemplate(str: string) {
-    return chalk(Object.assign([], { raw: [str] }));
+  chalkTemplate(str: string = "") {
+    let result = str;
+    try {
+      let data = Object.assign([], { raw: [result] });
+      result = chalk(data);
+    } catch (e) {
+      this.options.logger("err parsing", e);
+    }
+    return result;
   }
 
   paint(fields: fields) {
     let result = this.options.template;
 
     Object.entries(fields).forEach(([key, value]) => {
-      const color = this.options.colors[key] || "reset";
+      const style = this.options.styles[key] || "reset";
       const val = this.options.templates[key].replace("%s", value || "");
 
-      result = result.replace(`%${key}`, `{${color} ${val}}`);
+      result = result.replace(`%${key}`, chalkPipe(style)(val));
     });
 
-    result = this.chalkTemplate(result);
+    result = result;
 
     return result;
   }

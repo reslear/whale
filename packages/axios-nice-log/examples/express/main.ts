@@ -1,5 +1,5 @@
 import axios from "axios";
-import axiosNiceLog, { setGlobal } from "../../src";
+import axiosNiceLog, { setGlobal } from "../../dist/index";
 
 setGlobal({
   prefix: "kek",
