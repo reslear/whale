@@ -46,7 +46,7 @@ let defaults: INiceLogOptions = {
 };
 
 // TODO: deep merge
-export const setGlobal = (options?: INiceLogOptions): INiceLogOptions =>
+export const setAxiosNiceLog = (options?: INiceLogOptions): INiceLogOptions =>
   (defaults = { ...defaults, ...options });
 
 export class NiceLog {

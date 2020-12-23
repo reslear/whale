@@ -26,19 +26,36 @@ import axiosNiceLog from "@reslear/axios-log";
 axios.interceptors.request.use(axiosNiceLog);
 ```
 
+local option
+
+```ts
+import axios from "axios";
+import { axiosNiceLog, setAxiosNiceLog } from "@reslear/axios-log";
+
+// global options
+setAxiosNiceLog({
+  prefix: "my",
+});
+
+// local options
+axios.interceptors.request.use((config) =>
+  axiosNiceLog(config, {
+    prefix: "custom",
+  })
+);
+```
+
 ## Api
 
 Options
 
-| **Option** | **Type** | **Default** | **description** |
-
-| option    | type     | default                             | description                                                                |
-| --------- | -------- | ----------------------------------- | -------------------------------------------------------------------------- |
-| prefix    | string   | "axios"                             | Line prefix                                                                |
-| styles    | object   | [styles default](#styles)           | template parts styles                                                      |
-| template  | string   | "%prefix %time %method %url%params" | line template parts available <br>(**%prefix %time %method %url %params**) |
-| templates | object   | [templates default](#tempaltes)     | template parts value <br>**%s** - value replaced                           |
-| logger    | callback | console.log                         | logger function                                                            |
+| **Option** | **Type** | **Default**                         | **description**                                                            |
+| ---------- | -------- | ----------------------------------- | -------------------------------------------------------------------------- |
+| prefix     | string   | "axios"                             | Line prefix                                                                |
+| styles     | object   | [styles default](#styles)           | template parts styles                                                      |
+| template   | string   | "%prefix %time %method %url%params" | line template parts available <br>(**%prefix %time %method %url %params**) |
+| templates  | object   | [templates default](#tempaltes)     | template parts value <br>**%s** - value replaced                           |
+| logger     | callback | console.log                         | logger function                                                            |
 
 ### [styles default](#styles)
 
