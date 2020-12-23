@@ -21,7 +21,7 @@ basic
 
 ```ts
 import axios from "axios";
-import axiosNiceLog from "@reslear/axios-log";
+import axiosNiceLog from "axios-nice-log";
 
 axios.interceptors.request.use(axiosNiceLog);
 ```
@@ -30,7 +30,7 @@ local option
 
 ```ts
 import axios from "axios";
-import { axiosNiceLog, setAxiosNiceLog } from "@reslear/axios-log";
+import { axiosNiceLog, setAxiosNiceLog } from "axios-nice-log";
 
 // global options
 setAxiosNiceLog({
