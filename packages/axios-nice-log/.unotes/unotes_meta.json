@@ -13,6 +13,18 @@
       "isOrdered": true,
       "folders": {},
       "files": {}
+    },
+    "dist": {
+      "name": "dist",
+      "isOrdered": true,
+      "folders": {},
+      "files": {}
+    },
+    "examples": {
+      "name": "examples",
+      "isOrdered": true,
+      "folders": {},
+      "files": {}
     }
   },
   "files": {

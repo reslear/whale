@@ -3,13 +3,14 @@
 Axios interceptor logger for requests query parameters for humans 😜
 <img src="https://raw.githubusercontent.com/reslear/whale/main/packages/axios-log/media/thumb.png" width="584">
 
-- easy customizable
-- lightweight \~2kb
-- use [chalk](https://github.com/chalk/chalk)
+* many options customizable
+* set global defaults
+* lightweight \~2kb
+* use [chalk](https://github.com/chalk/chalk)
 
 ## Setup
 
-```sh
+``` sh
 npm i axios axios-nice-log
 ```
 
@@ -17,7 +18,7 @@ npm i axios axios-nice-log
 
 basic
 
-```ts
+``` ts
 import axios from "axios";
 import axiosNiceLog from "@reslear/axios-log";
 
@@ -26,7 +27,7 @@ axios.interceptors.request.use(axiosNiceLog);
 
 or options
 
-```ts
+``` ts
 import axios from "axios";
 import axiosNiceLog from "@reslear/axios-log-human";
 
@@ -39,7 +40,7 @@ axios.interceptors.request.use(
 
 multiple or global options usage
 
-```ts
+``` ts
 import axios from "axios";
 import { niceLog, INiceLogOptions} from "@reslear/axios-log-human";
 
@@ -60,5 +61,5 @@ customAxios.interceptors.request.use(niceLog(niceLogOptions));
 Options
 
 | **Option** | **Type** | **Default** | **description** |
-| ---------- | -------- | ----------- | --------------- |
-| prefix     | string   | "axios"     | Line prefix     |
+| ------ | ---- | ------- | ----------- |
+| prefix | string | "axios" | Line prefix |
