@@ -62,6 +62,11 @@ export class NiceLog {
   }
 
   get(config: AxiosRequestConfig): AxiosRequestConfig {
+    console.log(config);
+    config.paramsSerializer = (params) => {
+      console.log(1, params);
+      return "";
+    };
     let params = config.params
       ? Object.entries(config.params)
           .map(([key, val]) => `${key}${chalk.gray("=")}${val}`)

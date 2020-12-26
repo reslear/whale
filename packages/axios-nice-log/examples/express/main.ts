@@ -1,14 +1,15 @@
 import axios from "axios";
-import axiosNiceLog, { setAxiosNiceLog } from "../../dist/index";
+import axiosNiceLog, { setAxiosNiceLog } from "../../src/index";
 
 setAxiosNiceLog({
   prefix: "kek",
 });
 
-let url = "https://jsonplaceholder.typicode.com/todos/1?data=123&user=1";
+let url = `http://localhost:3000/api/test?data=123&user=1`;
 let get_params = {
   params: {
     local: "true",
+    user: 2,
   },
 };
 
