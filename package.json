@@ -6,15 +6,23 @@
     "url": "git+https://github.com/reslear/whale.git"
   },
   "devDependencies": {
+    "@types/ejs": "^3.0.5",
+    "@types/fs-extra": "^9.0.6",
+    "@types/validate-npm-package-name": "^3.0.2",
     "cac": "^6.7.1",
+    "ejs": "^3.1.5",
+    "enquirer": "^2.3.6",
+    "express-es6-template-engine": "^2.2.3",
+    "fs-extra": "^9.0.1",
     "ts-node": "^9.1.1",
-    "typescript": "^4.1.3"
+    "typescript": "^4.1.3",
+    "validate-npm-package-name": "^3.0.0"
   },
   "scripts": {
-    "create": "ts-node create-package/index.ts"
+    "new": "ts-node scripts/cli.ts"
   },
   "dependencies": {
-    "sao": "^2.0.0-beta.1"
+    "fast-glob": "^3.2.4"
   },
   "workspaces": [
     "./packages/*"
