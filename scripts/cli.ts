@@ -44,6 +44,8 @@ const init = async () => {
       await fsp.writeFile(entry, result);
     })
   );
+
+  // TODO: npm install
 };
 
 init();
