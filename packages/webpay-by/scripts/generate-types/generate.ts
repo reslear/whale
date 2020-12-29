@@ -1,21 +1,27 @@
+import { getDate, capitalize } from "./utils";
 import { IFields, ITable } from "./fields.d";
 
-const capitalize = (s: string) => {
-  if (typeof s !== "string") return "";
-  return s.charAt(0).toUpperCase() + s.slice(1);
-};
-
 export const generateTypes = (tables: ITable[]) => {
-  let date = new Date().toLocaleString("ru", { timeZoneName: "short" });
   let result: string[] = [
     `
     /* 
       Auto generated Webpay types
-      ${date}
+      ${getDate()}
     */\n`,
   ];
+  let interfaces: string[] = [];
+
+  result.push(`
+    export type TCurrency = "BYN" | "USD" | "EUR" | "RUB";
+    export type TLanguage = "russian" | "english";
+  `);
 
   tables.forEach((tableItem) => {
+    const name = capitalize(tableItem.id);
+    const interfaceName = `IFormFields${name}`;
+
+    interfaces.push(interfaceName);
+
     let fields = tableItem.fields
       .map((fieldItem) => {
         return `
@@ -31,7 +37,39 @@ export const generateTypes = (tables: ITable[]) => {
 
     result.push(`
     /** ${tableItem.name} */
-    export interface IFormFields${capitalize(tableItem.id)} {
+    export interface ${interfaceName} {
+      ${fields}
+    }    
+    `);
+  });
+
+  // TODO: parse name
+  result.push(`
+  
+    /** Поля формы оплаты */
+    export interface IFormFields extends ${interfaces.join(",")}{  
+    }
+  `);
+
+  return result.join("");
+};
+
+export const generateDefaults = (tables: ITable[]) => {
+  let result: string[] = [];
+
+  tables.forEach((tableItem) => {
+    const name = capitalize(tableItem.id);
+    const interfaceName = `IFormFields${name}`;
+
+    let fields = tableItem.fields
+      .map((fieldItem) => {
+        return `"${fieldItem.name}": ${fieldItem.default ?? `""`},`;
+      })
+      .join("");
+
+    result.push(`
+    /** ${tableItem.name} */
+    export const default_${tableItem.id} : ${interfaceName} = {
       ${fields}
     }`);
   });

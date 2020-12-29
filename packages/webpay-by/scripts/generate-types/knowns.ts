@@ -6,6 +6,7 @@ export const eachItemHook = (fields: IFields, table: ITableInputs) => {
   if (table.id === "pay") {
     if (fields.name === "wsb_language_id") {
       result.type = `"russian" | "english"`;
+      result.default = `"russian"`;
     }
   }
 

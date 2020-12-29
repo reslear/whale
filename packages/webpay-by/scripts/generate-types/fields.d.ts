@@ -4,6 +4,7 @@ export interface IFields {
   description: string;
   note: string;
   type?: string;
+  default?: any;
 }
 
 export interface IFieldsSource extends Omit<IFields, "required"> {

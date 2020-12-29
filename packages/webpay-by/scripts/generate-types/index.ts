@@ -1,8 +1,10 @@
-import { generateTypes } from "./generate";
+import { capitalize } from "./utils";
+import { generateDefaults, generateTypes } from "./generate";
 import { parseTables } from "./parse";
 import axios from "axios";
 import fse from "fs-extra";
 import { promises as fsp } from "fs";
+import prettier from "prettier";
 
 const date = new Date().toISOString().split("T")[0];
 const sourceList = [
@@ -25,10 +27,29 @@ const start = async (locale: string, link: string) => {
   }
   console.timeEnd("get");
 
+  console.time("parse");
   const tables = parseTables(source);
-  const typesData = generateTypes(tables);
+  console.timeEnd("parse");
 
-  await fse.outputFile(`./types-${locale}.d.ts`, typesData);
+  console.time("generate");
+  let types = generateTypes(tables);
+  //let defaults = generateDefaults(tables);
+  console.timeEnd("generate");
+
+  console.time("prettier");
+  let output = [types].join("\n");
+
+  output = prettier.format(output, {
+    parser: "typescript",
+  });
+  console.timeEnd("prettier");
+
+  console.time("save");
+  await fse.outputFile(
+    `./src/types/generated/types${capitalize(locale)}.d.ts`,
+    output
+  );
+  console.timeEnd("save");
 };
 
 sourceList.forEach(({ locale, link }) => {

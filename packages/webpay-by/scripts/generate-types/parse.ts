@@ -42,8 +42,10 @@ const parseTable = (data: string, tableInputs: ITableInputs): IFields[] => {
 export const parseTables = (source: string) => {
   let inputs: ITableInputs[] = [
     {
-      id: "pay",
-      name: "Поля формы оплаты",
+      id: "main",
+
+      // TODO: parse name
+      name: "Основные поля форма оплаты",
       selector: "#POSTRequest ~ table tbody tr",
     },
     /* {
