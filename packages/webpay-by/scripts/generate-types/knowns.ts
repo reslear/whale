@@ -1,3 +1,13 @@
-import { IFields } from "./fields";
+import { IFields, ITableInputs } from "./fields";
 
-export const eachItemHook = (fields: IFields, table_name: string) => {};
+export const eachItemHook = (fields: IFields, table: ITableInputs) => {
+  let result: IFields = fields;
+
+  if (table.id === "pay") {
+    if (fields.name === "wsb_language_id") {
+      result.type = `"russian" | "english"`;
+    }
+  }
+
+  return result;
+};

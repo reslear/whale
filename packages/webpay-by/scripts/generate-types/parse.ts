@@ -1,32 +1,39 @@
-import cheerio from "cheerio";
-import { IFields, ITable, ITableInputs } from "./fields.d";
+import $ from "cheerio";
+import TurndownService from "turndown";
 
-const parseTable = (data: string, tableData: ITableInputs): IFields[] => {
-  const $ = cheerio.load(data);
-  const pay_table = $(tableData.selector);
+import { IFields, ITable, ITableInputs, IFieldsSource } from "./fields.d";
+import { eachItemHook } from "./knowns";
 
+const turndownService = new TurndownService();
+
+/* turndownService.addRule("br-doc", {
+  filter: ["linebreak"],
+  replacement: (content) => "*" + content,
+}); */
+
+const parseField = (source: string) => {
+  let result = turndownService.turndown(source);
+
+  result = result.replace(/[\r\n]+/g, "\r\n\t\t\t\t* ").trim();
+
+  return result;
+};
+
+const parseTable = (data: string, tableInputs: ITableInputs): IFields[] => {
   let result: IFields[] = [];
 
-  pay_table.each((i, el) => {
-    let tds: any = [];
+  const trList = $(tableInputs.selector, data);
 
-    $("td", el).each((td_i, td_el) => {
-      let td_result: any = $(td_el).text();
-      if (td_i === 1) {
-        td_result = /да/.test(td_result);
-      }
+  trList.each((i, el) => {
+    let fields: IFields = {
+      name: $("td:eq(0)", el).html(),
+      required: /да|yes/.test($("td:eq(1)", el).html()),
+      description: parseField($("td:eq(2)", el).html()),
+      note: parseField($("td:eq(3)", el).html()),
+    };
 
-      tds.push(td_result);
-    });
-
-    let [name, required, description, note] = tds;
-
-    result.push({
-      name: name,
-      required,
-      description,
-      note,
-    });
+    fields = eachItemHook(fields, tableInputs);
+    result.push(fields);
   });
 
   return result;
@@ -35,15 +42,15 @@ const parseTable = (data: string, tableData: ITableInputs): IFields[] => {
 export const parseTables = (source: string) => {
   let inputs: ITableInputs[] = [
     {
-      id: "PayFields",
+      id: "pay",
       name: "Поля формы оплаты",
       selector: "#POSTRequest ~ table tbody tr",
     },
-    {
+    /* {
       id: "CartFields",
       name: "Поля для формирования корзины товаров/услуг",
       selector: "#cartFields ~ table tbody tr",
-    },
+    }, */
   ];
 
   let result: ITable[] = [];

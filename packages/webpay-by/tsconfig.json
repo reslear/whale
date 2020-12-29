@@ -1,9 +1,14 @@
 {
-  "extends": "../../tsconfig",
-  "include": ["src/**/*"],
-
   "compilerOptions": {
-    "rootDir": "src",
+    "target": "ES5",
+    "module": "CommonJS",
+    "declaration": true,
+    "sourceMap": false,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "lib": ["ESNext", "DOM"],
     "outDir": "dist"
-  }
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
 }

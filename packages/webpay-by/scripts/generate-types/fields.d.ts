@@ -3,6 +3,11 @@ export interface IFields {
   required: boolean;
   description: string;
   note: string;
+  type?: string;
+}
+
+export interface IFieldsSource extends Omit<IFields, "required"> {
+  required: string;
 }
 
 export interface ITable {
