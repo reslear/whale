@@ -22,23 +22,25 @@ export const generateTypes = (tables: ITableResult[]) => {
 
     interfaces.push(interfaceName);
 
-    let fields = tableItem.fields
-      .map((fieldItem) => {
-        return `
-      /** ${fieldItem.description}
-       * @remarks ${fieldItem.note}
-      */
+    let fields: string[] = [];
+    tableItem.fields.forEach((fieldItem) => {
+      let title = `/** ${fieldItem.description} ${
+        fieldItem.note ? `\n* @remarks ${fieldItem.note}\n` : ""
+      } */`;
+
+      let content = `
       "${fieldItem.name}"${fieldItem.required ? "" : "?"}: ${
-          fieldItem.type ?? "string"
-        };
+        fieldItem.type ?? "string"
+      };
      `;
-      })
-      .join("");
+
+      fields.push(`${title}${content}\n`);
+    });
 
     result.push(`
     /** ${tableItem.table.name} */
     export interface ${interfaceName} {
-      ${fields}
+      ${fields.join("")}
     }    
     `);
   });
