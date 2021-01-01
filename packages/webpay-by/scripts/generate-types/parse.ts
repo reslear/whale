@@ -19,13 +19,8 @@ const parseField = (source: string) => {
   return result;
 };
 
-interface IParseResult {
-  fields: IFields[];
-  table: ITableInputs;
-}
-
-const parseTable = (data: string, tableInputs: ITableInputs): IParseResult => {
-  let result: { fields: IFields[]; table: ITableInputs } = {
+const parseTable = (data: string, tableInputs: ITableInputs): ITableResult => {
+  let result: ITableResult = {
     fields: [],
     table: tableInputs,
   };

@@ -10,5 +10,22 @@ export const eachItemHook = (fields: IFields, table: ITableInputs) => {
     }
   }
 
+  if (table.id === "cart") {
+    if (fields.name === "wsb_invoice_item_name[{n}]") {
+      result.name = "wsb_invoice_item_name";
+      result.type = "string[]";
+    }
+
+    if (fields.name === "wsb_invoice_item_quantity[{n}]") {
+      result.name = "wsb_invoice_item_quantity";
+      result.type = "number[]";
+    }
+
+    if (fields.name === "wsb_invoice_item_price[{n}]") {
+      result.name = "wsb_invoice_item_price";
+      result.type = "number[]";
+    }
+  }
+
   return result;
 };

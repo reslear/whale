@@ -1,6 +1,5 @@
-import { TCurrency, IFormFields } from "./types/generated/typesRu.d";
-
-export { TCurrency, IFormFields };
+import * as typesRu from "./types/generated/typesRu.d";
+export { typesRu };
 
 export class WebPay {
   items: any[] = [];
@@ -29,4 +28,5 @@ export class WebPay {
   }
 }
 
-export default (...args: any) => new WebPay(args);
+// TODO: i18n types by EJS template
+export class WebPayEn extends WebPay {}
