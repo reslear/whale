@@ -58,11 +58,20 @@ export const parseTables = (source: string) => {
         name: "#paymentFormFields + h4",
       },
     },
-    /* {
-      id: "CartFields",
-      name: "Поля для формирования корзины товаров/услуг",
-      selector: "#cartFields ~ table tbody tr",
-    }, */
+    {
+      id: "cart",
+      selectors: {
+        tr: "#fieldsForCart + .table__wrapper tbody tr",
+        name: "#fieldsForCart",
+      },
+    },
+    {
+      id: "additional",
+      selectors: {
+        tr: "#fieldsForCart + .table__wrapper + h4 + .table__wrapper tbody tr",
+        name: "#fieldsForCart + .table__wrapper + h4",
+      },
+    },
   ];
 
   let result: ITableResult[] = [];
