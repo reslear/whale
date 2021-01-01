@@ -9,7 +9,7 @@ import prettier from "prettier";
 const date = new Date().toISOString().split("T")[0];
 const sourceList = [
   { locale: "ru", link: "https://docs.webpay.by/indexRU.html" },
-  //{ locale: "en", link: "https://docs.webpay.by/indexEN.html" },
+  //{ locale: "en", link: "https://docs.webpay.by/en/index.html" },
 ];
 
 const start = async (locale: string, link: string) => {

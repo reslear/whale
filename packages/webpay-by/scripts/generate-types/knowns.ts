@@ -12,10 +12,3 @@ export const eachItemHook = (fields: IFields, table: ITableInputs) => {
 
   return result;
 };
-/* 
-/^[a-z$_][a-z$_0-9]*$/i.test(el);
-let a = {
-  123d: {
-
-  }
-} */

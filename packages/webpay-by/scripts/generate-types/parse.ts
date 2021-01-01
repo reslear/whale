@@ -46,7 +46,7 @@ export const parseTables = (source: string) => {
 
       // TODO: parse name
       name: "Основные поля форма оплаты",
-      selector: "#POSTRequest ~ table tbody tr",
+      selector: "#paymentFormFields ~ .table__wrapper tbody tr",
     },
     /* {
       id: "CartFields",
