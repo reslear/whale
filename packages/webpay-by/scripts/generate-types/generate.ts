@@ -1,7 +1,7 @@
 import { getDate, capitalize } from "./utils";
-import { IFields, ITable } from "./fields.d";
+import { IFields, ITable, ITableResult } from "./fields.d";
 
-export const generateTypes = (tables: ITable[]) => {
+export const generateTypes = (tables: ITableResult[]) => {
   let result: string[] = [
     `
     /* 
@@ -17,7 +17,7 @@ export const generateTypes = (tables: ITable[]) => {
   `);
 
   tables.forEach((tableItem) => {
-    const name = capitalize(tableItem.id);
+    const name = capitalize(tableItem.table.id);
     const interfaceName = `IFormFields${name}`;
 
     interfaces.push(interfaceName);
@@ -36,7 +36,7 @@ export const generateTypes = (tables: ITable[]) => {
       .join("");
 
     result.push(`
-    /** ${tableItem.name} */
+    /** ${tableItem.table.name} */
     export interface ${interfaceName} {
       ${fields}
     }    
@@ -54,25 +54,25 @@ export const generateTypes = (tables: ITable[]) => {
   return result.join("");
 };
 
-export const generateDefaults = (tables: ITable[]) => {
-  let result: string[] = [];
+// export const generateDefaults = (tables: ITable[]) => {
+//   let result: string[] = [];
 
-  tables.forEach((tableItem) => {
-    const name = capitalize(tableItem.id);
-    const interfaceName = `IFormFields${name}`;
+//   tables.forEach((tableItem) => {
+//     const name = capitalize(tableItem.id);
+//     const interfaceName = `IFormFields${name}`;
 
-    let fields = tableItem.fields
-      .map((fieldItem) => {
-        return `"${fieldItem.name}": ${fieldItem.default ?? `""`},`;
-      })
-      .join("");
+//     let fields = tableItem.fields
+//       .map((fieldItem) => {
+//         return `"${fieldItem.name}": ${fieldItem.default ?? `""`},`;
+//       })
+//       .join("");
 
-    result.push(`
-    /** ${tableItem.name} */
-    export const default_${tableItem.id} : ${interfaceName} = {
-      ${fields}
-    }`);
-  });
+//     result.push(`
+//     /** ${tableItem.name} */
+//     export const default_${tableItem.id} : ${interfaceName} = {
+//       ${fields}
+//     }`);
+//   });
 
-  return result.join("");
-};
+//   return result.join("");
+// };

@@ -1,5 +1,5 @@
 import { capitalize } from "./utils";
-import { generateDefaults, generateTypes } from "./generate";
+import { generateTypes } from "./generate";
 import { parseTables } from "./parse";
 import axios from "axios";
 import fse from "fs-extra";

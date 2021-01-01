@@ -1,7 +1,7 @@
 import $ from "cheerio";
 import TurndownService from "turndown";
 
-import { IFields, ITable, ITableInputs, IFieldsSource } from "./fields.d";
+import { IFields, ITableInputs, ITableResult } from "./fields.d";
 import { eachItemHook } from "./knowns";
 
 const turndownService = new TurndownService();
@@ -19,10 +19,18 @@ const parseField = (source: string) => {
   return result;
 };
 
-const parseTable = (data: string, tableInputs: ITableInputs): IFields[] => {
-  let result: IFields[] = [];
+interface IParseResult {
+  fields: IFields[];
+  table: ITableInputs;
+}
 
-  const trList = $(tableInputs.selector, data);
+const parseTable = (data: string, tableInputs: ITableInputs): IParseResult => {
+  let result: { fields: IFields[]; table: ITableInputs } = {
+    fields: [],
+    table: tableInputs,
+  };
+
+  const trList = $(tableInputs.selectors.tr, data);
 
   trList.each((i, el) => {
     let fields: IFields = {
@@ -33,8 +41,10 @@ const parseTable = (data: string, tableInputs: ITableInputs): IFields[] => {
     };
 
     fields = eachItemHook(fields, tableInputs);
-    result.push(fields);
+    result.fields.push(fields);
   });
+
+  result.table.name = $(tableInputs.selectors.name, data).text();
 
   return result;
 };
@@ -43,10 +53,10 @@ export const parseTables = (source: string) => {
   let inputs: ITableInputs[] = [
     {
       id: "main",
-
-      // TODO: parse name
-      name: "Основные поля форма оплаты",
-      selector: "#paymentFormFields ~ .table__wrapper tbody tr",
+      selectors: {
+        tr: "#paymentFormFields + * + .table__wrapper tbody tr",
+        name: "#paymentFormFields + h4",
+      },
     },
     /* {
       id: "CartFields",
@@ -55,11 +65,11 @@ export const parseTables = (source: string) => {
     }, */
   ];
 
-  let result: ITable[] = [];
+  let result: ITableResult[] = [];
 
   inputs.forEach((table) => {
-    const fields = parseTable(source, table);
-    result.push({ fields, id: table.id, name: table.name });
+    const parseResult = parseTable(source, table);
+    result.push(parseResult);
   });
 
   return result;

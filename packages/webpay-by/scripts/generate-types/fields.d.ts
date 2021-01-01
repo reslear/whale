@@ -14,9 +14,16 @@ export interface IFieldsSource extends Omit<IFields, "required"> {
 export interface ITable {
   id: string;
   name: string;
-  fields: IFields[];
 }
 
 export interface ITableInputs extends Partial<Omit<ITable, "fields">> {
-  selector: string;
+  selectors?: {
+    tr: string;
+    name?: string;
+  };
+}
+
+export interface ITableResult {
+  table: ITableInputs;
+  fields: IFields[];
 }
