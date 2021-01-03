@@ -68,7 +68,9 @@ export const generateDefaults = (tables: ITableResult[]) => {
       let fields: string[] = [];
 
       tableItem.fields.forEach((fieldItem) => {
-        fields.push(`"${fieldItem.name}": ${fieldItem.default ?? `""`},`);
+        if (fieldItem.required) {
+          fields.push(`"${fieldItem.name}": ${fieldItem.default ?? `""`},`);
+        }
       });
 
       form_result.push(fields.join(""));

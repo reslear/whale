@@ -1,6 +1,7 @@
 // TODO: i18n types by EJS template
 import { _form_fields, _IFormFields } from "./types/generated/typesRu";
 import { createHash } from "crypto";
+import { isObject, omit } from "./utils";
 
 export type TFieldsItems = Pick<
   _IFormFields,
@@ -9,7 +10,11 @@ export type TFieldsItems = Pick<
   | "wsb_invoice_item_quantity"
 >;
 
-export interface IFormFields extends Omit<_IFormFields, keyof TFieldsItems> {}
+export interface IFormFields
+  extends Omit<
+    _IFormFields,
+    keyof TFieldsItems | "wsb_total" | "wsb_signature"
+  > {}
 
 export interface IWebPayOptions {}
 export type TSignFields =
@@ -30,20 +35,39 @@ export interface IFieldsItem {
 }
 
 export class WebPayForm {
-  #fields: IFormFields;
+  #fields: IFormFields = _form_fields;
   #items: IFieldsItem[] = [];
   options: IWebPayOptions = {};
 
   constructor(fields: Partial<IFormFields> = {}, options: IWebPayOptions = {}) {
-    let {
-      wsb_invoice_item_name,
-      wsb_invoice_item_price,
-      wsb_invoice_item_quantity,
-      ...form_fields
-    } = _form_fields;
-
-    this.#fields = { ...form_fields, ...fields };
+    this.fields = fields;
     this.options = { ...this.options, ...options };
+  }
+
+  set fields(value: Partial<IFormFields>) {
+    if (!isObject(value)) {
+      return;
+    }
+
+    let fields = {
+      ..._form_fields,
+      ...this.#fields,
+      ...value,
+    };
+
+    let result = omit(fields, [
+      "wsb_invoice_item_name",
+      "wsb_invoice_item_price",
+      "wsb_invoice_item_quantity",
+      "wsb_total",
+      "wsb_signature",
+    ]);
+
+    if (!result.wsb_seed) {
+      result.wsb_seed = this.uid();
+    }
+
+    this.#fields = result;
   }
 
   get total() {
@@ -60,7 +84,7 @@ export class WebPayForm {
   }
 
   private uid() {
-    return "_" + Math.random().toString(36).substr(2, 9);
+    return Math.random().toString(36).substr(2, 9);
   }
 
   addItem({ name, price, quantity = 1, id = this.uid() }: IFieldsItem) {
@@ -119,8 +143,19 @@ export class WebPayForm {
   get form_fields(): IFormFields {
     let result: IFormFields = {
       ...this.#fields,
-      wsb_total: this.total,
     };
+
+    return result;
+  }
+
+  get form_fields_array() {
+    let fields: IFormFields & { [K: string]: any } = {
+      ...this.#fields,
+    };
+
+    let result = Object.keys(fields).map((key) => {
+      return { name: key, value: fields[key] };
+    });
 
     return result;
   }
@@ -141,8 +176,8 @@ export class WebPayForm {
     return result;
   }
 
-  get form(): _IFormFields {
-    return { ...this.form_fields, ...this.form_items };
+  get form() {
+    return { ...this.form_fields, ...this.form_items, wsb_total: this.total };
   }
 
   createSignature = (key: string = "") => {

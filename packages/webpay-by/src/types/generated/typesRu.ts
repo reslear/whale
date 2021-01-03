@@ -1,6 +1,6 @@
 /* 
       Auto generated Webpay types
-      1/3/2021, 12:28:37 AM GMT+3
+      1/3/2021, 7:46:58 AM GMT+3
     */
 
 export type TCurrency = "BYN" | "USD" | "EUR" | "RUB";
@@ -27,7 +27,7 @@ export interface _IFormFieldsMain {
   /** Идентификатор валюты. Буквенный трехзначный код валюты согласно ISO4271.
    * @remarks Допустимые значения: **BYN**, **USD**, **EUR**, **RUB**
    */
-  wsb_currency_id: string;
+  wsb_currency_id: TCurrency;
 
   /** Версия формы оплаты.
    * @remarks Текущий номер версии: **2**
@@ -37,7 +37,7 @@ export interface _IFormFieldsMain {
   /** Идентификатор языка формы оплаты.
    * @remarks Допустимые значения: **russian**, **english**. При отсутствии значения определяется по настройкам браузера.
    */
-  wsb_language_id?: "russian" | "english";
+  wsb_language_id?: TLanguage;
 
   /** Случайная последовательность символов, участвующих в формировании подписи заказа.
    * @remarks Перейти к разделу: [Электронная подпись заказа](#orderSignature).
@@ -176,33 +176,14 @@ export interface _IFormFields
 export const _form_fields: _IFormFields = {
   "*scart": "",
   wsb_storeid: "",
-  wsb_store: "",
   wsb_order_num: "",
-  wsb_currency_id: "",
+  wsb_currency_id: "BYN",
   wsb_version: 2,
-  wsb_language_id: "russian",
   wsb_seed: "",
   wsb_signature: "",
-  wsb_return_url: "",
-  wsb_cancel_return_url: "",
-  wsb_notify_url: "",
   wsb_test: 1,
-  wsb_customer_name: "",
-  wsb_customer_address: "",
-  wsb_service_date: "",
   wsb_invoice_item_name: [],
   wsb_invoice_item_quantity: [],
   wsb_invoice_item_price: [],
-  wsb_tax: 0,
-  wsb_shipping_name: "",
-  wsb_shipping_price: 0,
-  wsb_discount_name: "",
-  wsb_discount_price: 0,
-  wsb_discount_promo_code: "",
   wsb_total: 0,
-  wsb_order_tag: "",
-  wsb_email: "",
-  wsb_phone: "",
-  wsb_order_contract: "",
-  wsb_tab: "",
 };

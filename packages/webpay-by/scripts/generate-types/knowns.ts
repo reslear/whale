@@ -32,8 +32,13 @@ export const eachItemHook = (fields: IFields, table: ITableInputs) => {
   // by tables
   if (table.id === "main") {
     if (fields.name === "wsb_language_id") {
-      result.type = `"russian" | "english"`;
+      result.type = `TLanguage`;
       result.default = `"russian"`;
+    }
+
+    if (fields.name === "wsb_currency_id") {
+      result.type = `TCurrency`;
+      result.default = `"BYN"`;
     }
   }
 
