@@ -1,6 +1,8 @@
 import { getDate, capitalize } from "./utils";
 import { IFields, ITable, ITableResult } from "./fields.d";
 
+const interfacePrefix = "_IFormFields";
+
 export const generateTypes = (tables: ITableResult[]) => {
   let result: string[] = [
     `
@@ -17,8 +19,8 @@ export const generateTypes = (tables: ITableResult[]) => {
   `);
 
   tables.forEach((tableItem) => {
-    const name = capitalize(tableItem.table.id);
-    const interfaceName = `IFormFields${name}`;
+    const name = capitalize(tableItem.table.id || "");
+    const interfaceName = `${interfacePrefix}${name}`;
 
     interfaces.push(interfaceName);
 
@@ -49,32 +51,36 @@ export const generateTypes = (tables: ITableResult[]) => {
   result.push(`
   
     /** Поля формы оплаты */
-    export interface IFormFields extends ${interfaces.join(",")}{  
+    export interface ${interfacePrefix} extends ${interfaces.join(",")}{  
     }
   `);
 
   return result.join("");
 };
 
-// export const generateDefaults = (tables: ITable[]) => {
-//   let result: string[] = [];
+export const generateDefaults = (tables: ITableResult[]) => {
+  let result: string[] = [];
+  let form_result: string[] = [];
 
-//   tables.forEach((tableItem) => {
-//     const name = capitalize(tableItem.id);
-//     const interfaceName = `IFormFields${name}`;
+  tables.forEach((tableItem) => {
+    // generate only form
+    if (tableItem.table.type === "form") {
+      let fields: string[] = [];
 
-//     let fields = tableItem.fields
-//       .map((fieldItem) => {
-//         return `"${fieldItem.name}": ${fieldItem.default ?? `""`},`;
-//       })
-//       .join("");
+      tableItem.fields.forEach((fieldItem) => {
+        fields.push(`"${fieldItem.name}": ${fieldItem.default ?? `""`},`);
+      });
 
-//     result.push(`
-//     /** ${tableItem.name} */
-//     export const default_${tableItem.id} : ${interfaceName} = {
-//       ${fields}
-//     }`);
-//   });
+      form_result.push(fields.join(""));
+    }
+  });
 
-//   return result.join("");
-// };
+  if (form_result.length) {
+    result.push(`
+    /** Поля формы оплаты по умолчанию */
+    export const _form_fields : ${interfacePrefix} = {
+      ${form_result.join("")}
+    }`);
+  }
+  return result.join("");
+};

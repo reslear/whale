@@ -25,21 +25,25 @@ const parseTable = (data: string, tableInputs: ITableInputs): ITableResult => {
     table: tableInputs,
   };
 
+  if (!tableInputs.selectors?.tr) {
+    return result;
+  }
+
   const trList = $(tableInputs.selectors.tr, data);
 
   trList.each((i, el) => {
     let fields: IFields = {
-      name: $("td:eq(0)", el).html(),
-      required: /да|yes/.test($("td:eq(1)", el).html()),
-      description: parseField($("td:eq(2)", el).html()),
-      note: parseField($("td:eq(3)", el).html()),
+      name: $("td:eq(0)", el).html() ?? "",
+      required: /да|yes/.test($("td:eq(1)", el).html() ?? ""),
+      description: parseField($("td:eq(2)", el).html() ?? ""),
+      note: parseField($("td:eq(3)", el).html() ?? ""),
     };
 
     fields = eachItemHook(fields, tableInputs);
     result.fields.push(fields);
   });
 
-  result.table.name = $(tableInputs.selectors.name, data).text();
+  result.table.name = $(tableInputs.selectors?.name || "", data).text();
 
   return result;
 };
@@ -48,6 +52,7 @@ export const parseTables = (source: string) => {
   let inputs: ITableInputs[] = [
     {
       id: "main",
+      type: "form",
       selectors: {
         tr: "#paymentFormFields + * + .table__wrapper tbody tr",
         name: "#paymentFormFields + h4",
@@ -55,6 +60,7 @@ export const parseTables = (source: string) => {
     },
     {
       id: "cart",
+      type: "form",
       selectors: {
         tr: "#fieldsForCart + .table__wrapper tbody tr",
         name: "#fieldsForCart",
@@ -62,6 +68,7 @@ export const parseTables = (source: string) => {
     },
     {
       id: "additional",
+      type: "form",
       selectors: {
         tr: "#fieldsForCart + .table__wrapper + h4 + .table__wrapper tbody tr",
         name: "#fieldsForCart + .table__wrapper + h4",

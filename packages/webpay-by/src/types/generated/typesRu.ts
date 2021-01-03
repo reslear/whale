@@ -1,13 +1,13 @@
 /* 
       Auto generated Webpay types
-      1/1/2021, 10:06:10 PM GMT+3
+      1/3/2021, 12:28:37 AM GMT+3
     */
 
 export type TCurrency = "BYN" | "USD" | "EUR" | "RUB";
 export type TLanguage = "russian" | "english";
 
 /** Основные поля форма оплаты */
-export interface IFormFieldsMain {
+export interface _IFormFieldsMain {
   /** Поле не содержит значения и обозначает тип запроса  */
   "*scart": string;
 
@@ -32,12 +32,12 @@ export interface IFormFieldsMain {
   /** Версия формы оплаты.
    * @remarks Текущий номер версии: **2**
    */
-  wsb_version: string;
+  wsb_version: number;
 
   /** Идентификатор языка формы оплаты.
    * @remarks Допустимые значения: **russian**, **english**. При отсутствии значения определяется по настройкам браузера.
    */
-  wsb_language_id?: string;
+  wsb_language_id?: "russian" | "english";
 
   /** Случайная последовательность символов, участвующих в формировании подписи заказа.
    * @remarks Перейти к разделу: [Электронная подпись заказа](#orderSignature).
@@ -70,7 +70,7 @@ export interface IFormFieldsMain {
    * 0 — производить реальную оплату.
    * @remarks В тестовой среде Sandbox значение данного поля должно быть равным 1.
    */
-  wsb_test: string;
+  wsb_test: number;
 
   /** Наименование получателя товара/услуги.
    * @remarks Максимальная длина поля 255 символов.
@@ -89,7 +89,7 @@ export interface IFormFieldsMain {
 }
 
 /** Поля для формирования корзины товаров/услуг */
-export interface IFormFieldsCart {
+export interface _IFormFieldsCart {
   /** Наименование единицы товара.
    * @remarks Индекс {n}, должен начинаться с 0 и увеличиваться на 1 для каждой последующей позиции.
    */
@@ -108,7 +108,7 @@ export interface IFormFieldsCart {
   /** Поле, значением, которого является сумма налога в белорусских рублях, добавляемая к общей сумме заказа.
    * @remarks При оплате через ЕРИП это поле не учитывается (сумма налога добавляется к сумме единицы товара).
    */
-  wsb_tax?: string;
+  wsb_tax?: number;
 
   /** Поле определяющее наименование (способ) доставки.
    * @remarks Максимальная длина поля 255 символов.
@@ -116,7 +116,7 @@ export interface IFormFieldsCart {
   wsb_shipping_name?: string;
 
   /** Поле, значением которого является сумма доставки, добавляемая к общей сумме заказа.  */
-  wsb_shipping_price?: string;
+  wsb_shipping_price?: number;
 
   /** Поле с описанием скидки.
    * @remarks Максимальная длина поля 255 символов.
@@ -126,7 +126,7 @@ export interface IFormFieldsCart {
   /** Поле, значением которого является сумма скидки, вычитаемая из общейсуммы заказа.
    * @remarks Значение должно быть положительным числом (без знака **"-" минус**).
    */
-  wsb_discount_price?: string;
+  wsb_discount_price?: number;
 
   /** Поле содержит значение промокода скидки для заказа.
    * @remarks Максимальная длина поля 32 символа.
@@ -139,11 +139,11 @@ export interface IFormFieldsCart {
    * wsb\_invoice\_item\_quantity\[n\] \* wsb\_invoice\_item\_price\[n\] + wsb\_tax + wsb\_shipping\_price - wsb\_discount\_price
    * @remarks Оплата не будет произведена, если **wsb\_total** и посчитанное значение товаров не будет совпадать. Покупателю будет отображена ошибка.
    */
-  wsb_total: string;
+  wsb_total: number;
 }
 
 /** Дополнительные поля */
-export interface IFormFieldsAdditional {
+export interface _IFormFieldsAdditional {
   /** Метка заказа. Используется для отнесения заказа к определенной категории, группировки заказов или других нужд.
    * @remarks Максимальная длина поля 64 символов.
    */
@@ -167,7 +167,42 @@ export interface IFormFieldsAdditional {
 }
 
 /** Поля формы оплаты */
-export interface IFormFields
-  extends IFormFieldsMain,
-    IFormFieldsCart,
-    IFormFieldsAdditional {}
+export interface _IFormFields
+  extends _IFormFieldsMain,
+    _IFormFieldsCart,
+    _IFormFieldsAdditional {}
+
+/** Поля формы оплаты по умолчанию */
+export const _form_fields: _IFormFields = {
+  "*scart": "",
+  wsb_storeid: "",
+  wsb_store: "",
+  wsb_order_num: "",
+  wsb_currency_id: "",
+  wsb_version: 2,
+  wsb_language_id: "russian",
+  wsb_seed: "",
+  wsb_signature: "",
+  wsb_return_url: "",
+  wsb_cancel_return_url: "",
+  wsb_notify_url: "",
+  wsb_test: 1,
+  wsb_customer_name: "",
+  wsb_customer_address: "",
+  wsb_service_date: "",
+  wsb_invoice_item_name: [],
+  wsb_invoice_item_quantity: [],
+  wsb_invoice_item_price: [],
+  wsb_tax: 0,
+  wsb_shipping_name: "",
+  wsb_shipping_price: 0,
+  wsb_discount_name: "",
+  wsb_discount_price: 0,
+  wsb_discount_promo_code: "",
+  wsb_total: 0,
+  wsb_order_tag: "",
+  wsb_email: "",
+  wsb_phone: "",
+  wsb_order_contract: "",
+  wsb_tab: "",
+};
