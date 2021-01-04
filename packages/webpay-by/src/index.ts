@@ -1,7 +1,7 @@
 // TODO: i18n types by EJS template
 import { _form_fields, _IFormFields } from "./types/generated/typesRu";
 import { createHash } from "crypto";
-import { isObject, omit } from "./utils";
+import { isObject, omit, pick } from "./utils";
 
 export type TFieldsItems = Pick<
   _IFormFields,
@@ -16,7 +16,6 @@ export interface IFormFields
     keyof TFieldsItems | "wsb_total" | "wsb_signature"
   > {}
 
-export interface IWebPayOptions {}
 export type TSignFields =
   | "wsb_seed"
   | "wsb_storeid"
@@ -34,18 +33,46 @@ export interface IFieldsItem {
   name: string;
 }
 
+export interface IWebPayInitial {
+  fields?: Partial<IFormFields>;
+  items?: IFieldsItem[];
+  secret?: string;
+}
+
+enum ErrorMsg {
+  MISSING_PARAMS = "missing required params",
+  ID_EXISTS = "id exists, skip",
+  NOT_OBJECT = "param not Object",
+  NOT_ARRAY = "param not Array",
+}
+
+const Err = (msg: string, ret: any = undefined) => {
+  console.error("Error", msg);
+  return ret;
+};
+
+interface IFormResultReturnArray {
+  name: keyof _IFormFields;
+  value: any;
+}
+type TGetFormObject = Partial<_IFormFields> & { items?: IFieldsItem[] };
+type TGetFormArray = IFormResultReturnArray[];
+type TGetFormType = "default" | "items" | "static";
+
 export class WebPayForm {
   #fields: IFormFields = _form_fields;
   #items: IFieldsItem[] = [];
-  options: IWebPayOptions = {};
+  #secret: string = "";
 
-  constructor(fields: Partial<IFormFields> = {}, options: IWebPayOptions = {}) {
+  constructor({ fields = {}, items = [], secret = "" }: IWebPayInitial = {}) {
     this.fields = fields;
-    this.options = { ...this.options, ...options };
+    this.items = items;
+    this.#secret = secret;
   }
 
   set fields(value: Partial<IFormFields>) {
     if (!isObject(value)) {
+      Err(ErrorMsg.NOT_OBJECT);
       return;
     }
 
@@ -83,16 +110,31 @@ export class WebPayForm {
     return result;
   }
 
-  private uid() {
-    return Math.random().toString(36).substr(2, 9);
+  uid() {
+    return +new Date() + Math.random().toString(36).substr(2, 9);
   }
 
-  addItem({ name, price, quantity = 1, id = this.uid() }: IFieldsItem) {
-    if (!name || !price) {
-      console.error("missing required params");
+  set items(items: IFieldsItem[]) {
+    if (!Array.isArray(items)) {
+      Err(ErrorMsg.NOT_ARRAY);
       return;
     }
 
+    // clean
+    this.#items = [];
+
+    // set
+    items.forEach((item) => this.addItem(item));
+  }
+
+  addItem({ name, price, quantity = 1, id = this.uid() }: IFieldsItem) {
+    if (!name || !price) return Err(ErrorMsg.MISSING_PARAMS);
+
+    // check is id
+    const foundItem = this.findItem({ id });
+    if (foundItem) return Err(ErrorMsg.ID_EXISTS);
+
+    // add
     this.#items.push({ id, name, price, quantity });
 
     return id;
@@ -137,30 +179,10 @@ export class WebPayForm {
   }
 
   get items() {
-    return this.#items;
+    return this.#items.map(({ index, ...item }) => item);
   }
 
-  get form_fields(): IFormFields {
-    let result: IFormFields = {
-      ...this.#fields,
-    };
-
-    return result;
-  }
-
-  get form_fields_array() {
-    let fields: IFormFields & { [K: string]: any } = {
-      ...this.#fields,
-    };
-
-    let result = Object.keys(fields).map((key) => {
-      return { name: key, value: fields[key] };
-    });
-
-    return result;
-  }
-
-  get form_items() {
+  getItems() {
     let result: TFieldsItems = {
       wsb_invoice_item_name: [],
       wsb_invoice_item_price: [],
@@ -176,25 +198,64 @@ export class WebPayForm {
     return result;
   }
 
-  get form() {
-    return { ...this.form_fields, ...this.form_items, wsb_total: this.total };
+  getForm(type: TGetFormType = "default") {
+    let fields: TGetFormObject = {
+      ...this.#fields,
+    };
+
+    let computed = {
+      wsb_total: this.total,
+      wsb_signature: this.sign(),
+    };
+
+    switch (type) {
+      case "default":
+        fields = {
+          ...fields,
+          ...this.getItems(),
+          ...computed,
+        };
+
+        break;
+      case "items":
+        fields = {
+          ...fields,
+          ...computed,
+          items: this.items,
+        };
+
+        break;
+      case "static":
+        fields = omit(fields, ["wsb_total", "wsb_signature"]);
+        break;
+    }
+
+    return fields;
   }
 
-  createSignature = (key: string = "") => {
-    const form = this.form;
+  getFormArray(name?: TGetFormType) {
+    const fields = this.getForm(name);
+    let keys = Object.keys(fields) as Array<keyof _IFormFields>;
 
-    const acc =
-      form.wsb_seed +
-      form.wsb_storeid +
-      form.wsb_order_num +
-      form.wsb_test +
-      form.wsb_currency_id +
-      form.wsb_total +
-      key;
+    let result = keys.map((key) => {
+      return { name: key, value: fields[key] };
+    });
 
-    const version = form.wsb_version;
+    return result as TGetFormArray;
+  }
 
-    switch (version) {
+  sign = () => {
+    const acc = [
+      this.#fields.wsb_seed,
+      this.#fields.wsb_storeid,
+      this.#fields.wsb_order_num,
+      this.#fields.wsb_test,
+      this.#fields.wsb_currency_id,
+      this.total,
+      this.#secret,
+    ].join("");
+
+    switch (this.#fields.wsb_version) {
       case 1:
         return createHash("md5").update(acc).digest("hex");
       case 2:

@@ -1,26 +1,32 @@
 import { WebPayForm } from "../../src";
 
 const start = async (baby?: string) => {
-  const webpay = new WebPayForm();
+  const webpay = new WebPayForm({
+    fields: {
+      wsb_storeid: "614441705",
+      wsb_store: "Название Вашего магазина",
+      wsb_order_num: "ORDER-12345678",
+    },
+    items: [
+      {
+        id: "3",
+        name: "123",
+        price: 0.23,
+        quantity: 2,
+      },
+      {
+        name: "Сертификат на 3$",
+        price: 5,
+        quantity: 1,
+      },
+    ],
 
-  const result = webpay.addItem({
-    id: "3",
-    name: "123",
-    price: 0.23,
-    quantity: 2,
+    secret: "f3f5e53bb808",
   });
 
-  webpay.addItem({
-    name: "Сертификат на 3$",
-    price: 5,
-    quantity: 1,
-  });
+  const result = webpay.getForm("items");
 
-  console.log("test:", result, webpay.items);
-  console.log("test:", webpay.createSignature("123"));
-  /* console.log("total:", webpay.total);
-  
-  */ console.log(webpay.form);
+  console.log(result);
 };
 
 start();
