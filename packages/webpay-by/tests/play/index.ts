@@ -24,7 +24,7 @@ const start = async (baby?: string) => {
     secret: "f3f5e53bb808",
   });
 
-  const result = webpay.getForm("items");
+  const result = webpay.getForm();
 
   console.log(result);
 };

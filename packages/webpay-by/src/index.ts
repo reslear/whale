@@ -55,9 +55,13 @@ interface IFormResultReturnArray {
   name: keyof _IFormFields;
   value: any;
 }
-type TGetFormObject = Partial<_IFormFields> & { items?: IFieldsItem[] };
+type TGetFormObject = Partial<_IFormFields> & {
+  [key: string]: any;
+  items?: IFieldsItem[];
+};
+
 type TGetFormArray = IFormResultReturnArray[];
-type TGetFormType = "default" | "items" | "static";
+type TGetFormType = "comma" | "items" | "static" | "flat";
 
 export class WebPayForm {
   #fields: IFormFields = _form_fields;
@@ -198,32 +202,45 @@ export class WebPayForm {
     return result;
   }
 
-  getForm(type: TGetFormType = "default") {
-    let fields: TGetFormObject = {
-      ...this.#fields,
-    };
+  getItemsFlat() {
+    let result: TGetFormObject = {};
 
+    this.#items.map((item, index) => {
+      result[`wsb_invoice_item_name[${index}]`] = item.name;
+      result[`wsb_invoice_item_price[${index}]`] = item.price;
+      result[`wsb_invoice_item_quantity[${index}]`] = item.quantity;
+    });
+
+    return result;
+  }
+
+  getForm(type: TGetFormType = "flat") {
     let computed = {
       wsb_total: this.total,
       wsb_signature: this.sign(),
     };
 
+    let fields: TGetFormObject = {
+      ...this.#fields,
+      ...computed,
+    };
+
     switch (type) {
-      case "default":
+      case "comma":
         fields = {
           ...fields,
           ...this.getItems(),
-          ...computed,
         };
 
         break;
-      case "items":
+      case "flat":
         fields = {
           ...fields,
-          ...computed,
-          items: this.items,
+          ...this.getItemsFlat(),
         };
-
+        break;
+      case "items":
+        fields.items = this.items;
         break;
       case "static":
         fields = omit(fields, ["wsb_total", "wsb_signature"]);
