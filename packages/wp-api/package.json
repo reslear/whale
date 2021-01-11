@@ -1,9 +1,9 @@
 {
-  "name": "<%= name %>",
+  "name": "wp-api",
   "version": "0.0.0",
-  "description": "<%= description %>",
+  "description": "Wordpress simple sdk api",
   "author": "reslear <reslear@gmail.com>",
-  "homepage": "https://github.com/reslear/whale/tree/main/packages/<%= name %>",
+  "homepage": "https://github.com/reslear/whale/tree/main/packages/wp-api",
   "license": "MIT",
   "main": "dist/index.js",
   "module": "dist/esm/index.js",
