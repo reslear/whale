@@ -1,11 +1,12 @@
 {
   "name": "webpay-by",
-  "version": "0.0.7",
+  "version": "0.0.9",
   "description": "Form fields api for Belarus payment system Webpay.by",
   "author": "reslear <reslear@gmail.com>",
   "homepage": "https://github.com/reslear/whale/tree/main/packages/webpay-by",
   "license": "MIT",
   "main": "dist/index.js",
+  "module": "dist/esm/index.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist"
@@ -22,7 +23,7 @@
     "parse": "ts-node scripts/generate-types/index.ts",
     "test": "tsnd --clear --respawn tests/play/index.ts",
     "dev": "tsnd --respawn examples/express/server.ts",
-    "build": "tsup src/index.ts --format cjs --dts ",
+    "build": "tsup src/index.ts --format esm,cjs --dts --legacy-output",
     "clean": "rm -rf dist",
     "deploy": "npm run clean && npm run build && npm version patch && npm publish --access public"
   },

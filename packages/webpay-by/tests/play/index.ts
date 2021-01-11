@@ -1,4 +1,4 @@
-import { WebPayForm } from "../../src";
+import { WebPayForm, checkSign } from "../../src";
 
 const start = async (baby?: string) => {
   const webpay = new WebPayForm({
@@ -29,4 +29,24 @@ const start = async (baby?: string) => {
   console.log(result);
 };
 
-start();
+//start();
+
+const res = checkSign(
+  {
+    batch_timestamp: "1610370522",
+    currency_id: "BYN",
+    amount: "100",
+    payment_method: "cc",
+    order_id: "187313",
+    site_order_id: "19440",
+    transaction_id: "246485428",
+    payment_type: "4",
+    rrn: "136663692426",
+    wsb_signature: "ab88459db0110b0677568c777caf2ebe",
+    action: "0",
+    rc: "W0001(00)",
+    approval: "136663",
+  },
+  "f3f5e53bb808"
+);
+console.log(res);
