@@ -34,5 +34,7 @@
     "tsup": "3.11.0",
     "typescript": "4.1.3"
   },
-  "dependencies": {}
+  "dependencies": {
+    "axios": "^0.21.1"
+  }
 }
