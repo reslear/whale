@@ -1,8 +1,13 @@
 import axios, { AxiosRequestConfig, AxiosInstance, Method } from "axios";
 
 export class WordPressApi {
-  prefix = "/wp-json/wp/v2";
+  prefix_wp_json = "/wp-json";
+  prefix_wp = "/wp/v2";
   axios: AxiosInstance;
+
+  get prefix() {
+    return `${this.prefix_wp_json}${this.prefix_wp}`;
+  }
 
   constructor(axiosConfig?: AxiosRequestConfig) {
     this.axios = axios.create(axiosConfig);
