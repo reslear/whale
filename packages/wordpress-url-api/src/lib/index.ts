@@ -62,14 +62,28 @@ export class WordpressUrlApi {
     };
   }
 
-  async request(
-    url: string,
-    data: any = {},
-    method: Method = "get",
-    config: AxiosRequestConfig = {}
-  ) {
+  async request({
+    path = "",
+    data = {},
+    _method = "get",
+    config = {},
+    options = {
+      returnHeaders: false,
+    },
+  }: {
+    path: string;
+    data: any;
+    _method?: Method;
+    config?: AxiosRequestConfig;
+    options?: IMethodOptions;
+  }) {
+    const { returnHeaders } = options;
+
+    let url = this.getUrl(path);
+    const method = _method.toLowerCase() as Method;
+
     const params = {
-      [method.toLowerCase() === "get" ? "params" : "data"]: data,
+      [method === "get" ? "params" : "data"]: data,
     };
 
     const headers = {
@@ -85,50 +99,45 @@ export class WordpressUrlApi {
         ...headers,
       });
 
-      return result;
-    } catch (e) {
-      const resp: AxiosResponse = e.response;
-
-      if (resp) {
-        console.log(resp.config, resp.status, resp.headers, resp.data);
-        return false;
-      } else if (e.request) {
-        console.log(e.request);
+      if (returnHeaders) {
+        return {
+          headers: result.headers,
+          data: result.data,
+        };
       } else {
-        console.log("Error", e.message);
+        return result.data;
       }
-      console.log(e);
+    } catch (e) {
+      this.showErrors(e);
     }
+  }
+
+  showErrors(e: any) {
+    const resp: AxiosResponse = e.response;
+
+    if (resp) {
+      console.log(resp.config, resp.status, resp.headers, resp.data);
+      return false;
+    } else if (e.request) {
+      console.log(e.request);
+    } else {
+      console.log("Error", e.message);
+    }
+    console.log(e);
   }
 
   urlFix(value: string = "") {
     return value.replace(/^\/|\/$/, "");
   }
 
-  url(path: string) {
+  getUrl(path: string) {
     return [this.host, this.prefix, path]
       .map((item) => this.urlFix(item))
       .join("/");
   }
 
-  async get(
-    path: string,
-    data: any = {},
-
-    { returnHeaders = false }: IMethodOptions = {}
-  ) {
-    const req = await this.request(this.url(path), data);
-
-    if (!req) return null;
-
-    if (returnHeaders) {
-      return {
-        headers: req.headers,
-        data: req.data,
-      };
-    } else {
-      return req.data;
-    }
+  async get(path: string, data?: any, options?: IMethodOptions) {
+    return await this.request({ path, data, options });
   }
 
   async post(
@@ -136,7 +145,7 @@ export class WordpressUrlApi {
     data: any = {},
     { returnHeaders = false }: IMethodOptions = {}
   ) {
-    const req = await this.request(this.url(path), data, "post", {
+    const req = await this.request(path, data, "post", {
       headers: { "Content-Type": "application/json" },
     });
 
