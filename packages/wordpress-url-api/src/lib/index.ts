@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig, AxiosInstance, Method } from "axios";
 
-export class WordPressApi {
+export class WordpressUrlApi {
   prefix_wp_json = "/wp-json";
   prefix_wp = "/wp/v2";
   axios: AxiosInstance;
@@ -97,3 +97,5 @@ export class WordPressApi {
     }
   }
 }
+
+export default WordpressUrlApi;
