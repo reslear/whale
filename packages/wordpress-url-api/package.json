@@ -1,7 +1,7 @@
 {
   "name": "wordpress-url-api",
-  "version": "0.0.1",
-  "description": "Wordpress simple sdk api",
+  "version": "0.0.2",
+  "description": "Wordpress simple sdk url like api",
   "author": "reslear <reslear@gmail.com>",
   "homepage": "https://github.com/reslear/whale/tree/main/packages/wp-api",
   "license": "MIT",
@@ -20,7 +20,7 @@
     "url": "git+https://github.com/reslear/whale.git"
   },
   "scripts": {
-    "dev": "tsnd --respawn examples/express/server.ts",
+    "dev": "tsnd --respawn test/play/index.ts",
     "build": "tsup src/index.ts --format esm,cjs --dts --legacy-output",
     "clean": "rm -rf dist",
     "deploy": "npm run clean && npm run build && npm version patch && npm publish --access public"

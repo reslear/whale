@@ -1,16 +1,61 @@
-import axios, { AxiosRequestConfig, AxiosInstance, Method } from "axios";
+import axios, {
+  AxiosRequestConfig,
+  AxiosInstance,
+  Method,
+  AxiosResponse,
+} from "axios";
+
+interface IBasicAuth {
+  login: string;
+  password: string;
+}
+interface IOptions {
+  host?: string;
+  prefix?: string;
+  axiosConfig?: AxiosRequestConfig;
+  auth?: IBasicAuth;
+}
+interface IMethodOptions {
+  returnHeaders?: boolean;
+}
 
 export class WordpressUrlApi {
-  prefix_wp_json = "/wp-json";
-  prefix_wp = "/wp/v2";
   axios: AxiosInstance;
+  host: string = "";
+  prefix: string = "/wp-json";
 
-  get prefix() {
-    return `${this.prefix_wp_json}${this.prefix_wp}`;
+  auth: IBasicAuth = {
+    login: "",
+    password: "",
+  };
+
+  constructor({ auth, axiosConfig, host, prefix }: IOptions = {}) {
+    if (auth) {
+      this.auth = { ...this.auth, ...auth };
+    }
+
+    if (host) {
+      this.host = host;
+    }
+    if (prefix) this.prefix = prefix;
+
+    this.axios = axios.create(axiosConfig);
   }
 
-  constructor(axiosConfig?: AxiosRequestConfig) {
-    this.axios = axios.create(axiosConfig);
+  get isUseAuth() {
+    return this.auth.login && this.auth.password;
+  }
+
+  get authHeader() {
+    if (!this.isUseAuth) {
+      return {};
+    }
+    let result = Buffer.from(
+      `${this.auth.login}:${this.auth.password}`
+    ).toString("base64");
+    return {
+      Authorization: `Basic ${result}`,
+    };
   }
 
   async request(
@@ -23,20 +68,26 @@ export class WordpressUrlApi {
       [method.toLowerCase() === "get" ? "params" : "data"]: data,
     };
 
+    const headers = {
+      headers: { ...this.authHeader, ...(config.headers ?? {}) },
+    };
+
     try {
       const result = await this.axios({
         method,
-        url: `${url}`,
+        url,
         ...params,
         ...config,
+        ...headers,
       });
 
       return result;
     } catch (e) {
-      if (e.response) {
-        console.log(e.response.data);
-        console.log(e.response.status);
-        console.log(e.response.headers);
+      const resp: AxiosResponse = e.response;
+
+      if (resp) {
+        console.log(resp.config, resp.status, resp.headers, resp.data);
+        return false;
       } else if (e.request) {
         console.log(e.request);
       } else {
@@ -46,19 +97,27 @@ export class WordpressUrlApi {
     }
   }
 
+  urlFix(value: string = "") {
+    return value.replace(/^\/|\/$/, "");
+  }
+
+  url(path: string) {
+    return [this.host, this.prefix, path]
+      .map((item) => this.urlFix(item))
+      .join("/");
+  }
+
   async get(
-    url: string,
+    path: string,
     data: any = {},
-    options: {
-      headers?: boolean;
-      prefix?: string;
-    } = {}
+
+    { returnHeaders = false }: IMethodOptions = {}
   ) {
-    const req = await this.request((options.prefix ?? this.prefix) + url, data);
+    const req = await this.request(this.url(path), data);
 
     if (!req) return null;
 
-    if (options.headers) {
+    if (returnHeaders) {
       return {
         headers: req.headers,
         data: req.data,
@@ -69,25 +128,17 @@ export class WordpressUrlApi {
   }
 
   async post(
-    url: string,
+    path: string,
     data: any = {},
-    options: {
-      headers?: boolean;
-      prefix?: string;
-    } = {}
+    { returnHeaders = false }: IMethodOptions = {}
   ) {
-    const req = await this.request(
-      (options.prefix ?? this.prefix) + url,
-      data,
-      "post",
-      {
-        headers: { "content-type": "application/x-www-form-urlencoded" },
-      }
-    );
+    const req = await this.request(this.url(path), data, "post", {
+      headers: { "Content-Type": "application/json" },
+    });
 
     if (!req) return null;
 
-    if (options.headers) {
+    if (returnHeaders) {
       return {
         headers: req.headers,
         data: req.data,
