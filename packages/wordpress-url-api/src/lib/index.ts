@@ -34,6 +34,7 @@ export class WordpressUrlApi {
   // TODO: app like https://gist.github.com/georgestephanis/44d16dfdd17bd18b9c45d1d5e6d7ec7b
   // https://make.wordpress.org/core/2020/11/05/application-passwords-integration-guide/
   // https://rudrastyh.com/wordpress/rest-api-create-delete-posts.html
+  // https://developer.wordpress.org/rest-api/using-the-rest-api/authentication/#authentication-plugins
 
   auth: IBasicAuth = {
     login: "",
