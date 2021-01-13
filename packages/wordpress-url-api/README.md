@@ -4,6 +4,7 @@ Wordpress simple sdk url like api
 
 - base on best http client [axios](https://github.com/axios/axios)
 - support authorization with [basic auth plugin](https://github.com/WP-API/Basic-Auth)
+- methods **get**, **put**, **post**
 
 ## Examples
 
@@ -39,6 +40,20 @@ const create_post = await wpApi.post("/wp/v2/orders", {
 });
 ```
 
+put record
+
+```ts
+const update_post = await wpApi.put("/wp/v2/orders/6331", {
+  title: "new title2",
+  fields: {
+    cert: {
+      series: "10",
+      barcode: "327831728731",
+    },
+  },
+});
+```
+
 update [ACF fields](https://github.com/airesvsg/acf-to-rest-api) example:
 
 ```ts
@@ -57,3 +72,4 @@ const update_acf = await wpApi.post("/acf/v3/orders/6327", {
 ## TODO:
 
 - upload media example
+- user authorization instructions
