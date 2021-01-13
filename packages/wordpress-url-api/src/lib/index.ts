@@ -16,8 +16,15 @@ interface IOptions {
   auth?: IBasicAuth;
 }
 interface IMethodOptions {
-  returnHeaders?: boolean;
+  returnHeaders: boolean;
+  config: AxiosRequestConfig;
 }
+
+export type IMethodArgs = [
+  path: string,
+  data?: any,
+  options?: Partial<IMethodOptions>
+];
 
 export class WordpressUrlApi {
   axios: AxiosInstance;
@@ -62,32 +69,23 @@ export class WordpressUrlApi {
     };
   }
 
-  async request({
-    path = "",
-    data = {},
-    _method = "get",
-    config = {},
-    options = {
-      returnHeaders: false,
-    },
-  }: {
-    path: string;
-    data: any;
-    _method?: Method;
-    config?: AxiosRequestConfig;
-    options?: IMethodOptions;
-  }) {
-    const { returnHeaders } = options;
+  async request(
+    method: Method = "get",
+    [path, data, options = {}]: IMethodArgs
+  ) {
+    const { returnHeaders = false, config = {} } = options;
 
     let url = this.getUrl(path);
-    const method = _method.toLowerCase() as Method;
+    method = method.toLowerCase() as Method;
 
     const params = {
       [method === "get" ? "params" : "data"]: data,
     };
 
-    const headers = {
-      headers: { ...this.authHeader, ...(config.headers ?? {}) },
+    let headers = {
+      ...this.authHeader,
+      ...{ "Content-Type": "application/json" },
+      ...(config.headers ?? {}),
     };
 
     try {
@@ -96,7 +94,7 @@ export class WordpressUrlApi {
         url,
         ...params,
         ...config,
-        ...headers,
+        headers,
       });
 
       if (returnHeaders) {
@@ -113,17 +111,16 @@ export class WordpressUrlApi {
   }
 
   showErrors(e: any) {
-    const resp: AxiosResponse = e.response;
-
-    if (resp) {
-      console.log(resp.config, resp.status, resp.headers, resp.data);
-      return false;
+    if (e.response) {
+      const { request, ...other }: AxiosResponse = e.response;
+      console.log(other);
     } else if (e.request) {
       console.log(e.request);
-    } else {
+    } else if (e.message) {
       console.log("Error", e.message);
+    } else {
+      console.log(e);
     }
-    console.log(e);
   }
 
   urlFix(value: string = "") {
@@ -136,29 +133,16 @@ export class WordpressUrlApi {
       .join("/");
   }
 
-  async get(path: string, data?: any, options?: IMethodOptions) {
-    return await this.request({ path, data, options });
+  async post(...args: IMethodArgs) {
+    return await this.request("post", args);
   }
 
-  async post(
-    path: string,
-    data: any = {},
-    { returnHeaders = false }: IMethodOptions = {}
-  ) {
-    const req = await this.request(path, data, "post", {
-      headers: { "Content-Type": "application/json" },
-    });
+  async get(...args: IMethodArgs) {
+    return await this.request("put", args);
+  }
 
-    if (!req) return null;
-
-    if (returnHeaders) {
-      return {
-        headers: req.headers,
-        data: req.data,
-      };
-    } else {
-      return req.data;
-    }
+  async put(...args: IMethodArgs) {
+    return await this.request("put", args);
   }
 }
 

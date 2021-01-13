@@ -1,6 +1,6 @@
 {
   "name": "wordpress-url-api",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Wordpress simple sdk url like api",
   "author": "reslear <reslear@gmail.com>",
   "homepage": "https://github.com/reslear/whale/tree/main/packages/wp-api",
