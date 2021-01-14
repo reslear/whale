@@ -139,7 +139,7 @@ export class WordpressUrlApi {
   }
 
   async get(...args: IMethodArgs) {
-    return await this.request("put", args);
+    return await this.request("get", args);
   }
 
   async put(...args: IMethodArgs) {
