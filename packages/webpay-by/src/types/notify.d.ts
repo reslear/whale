@@ -1,3 +1,6 @@
+/**
+ * Нотификатор об оплате
+ */
 export interface INotifyFields {
   /** Время совершения транзакции */
   batch_timestamp: string;

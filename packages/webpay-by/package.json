@@ -35,6 +35,7 @@
     "@types/turndown": "^5.0.0",
     "axios": "^0.21.1",
     "cheerio": "^1.0.0-rc.5",
+    "dayjs": "^1.10.3",
     "fs-extra": "^9.0.1",
     "prettier": "2.2.1",
     "ts-node": "9.1.1",

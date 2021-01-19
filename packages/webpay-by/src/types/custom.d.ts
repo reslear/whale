@@ -1,5 +1,6 @@
 // TODO: i18n types by EJS template
 import { _IFormFields } from "./generated/typesRu";
+import { IFieldsSession } from "./knows";
 
 export type TSignFields = Pick<
   _IFormFields,
@@ -21,9 +22,10 @@ export type TFieldsItems = Pick<
 
 export interface IFormFields
   extends Omit<
-    _IFormFields,
-    keyof TFieldsItems | "wsb_total" | "wsb_signature"
-  > {}
+      _IFormFields,
+      keyof TFieldsItems | "wsb_total" | "wsb_signature"
+    >,
+    IFieldsSession {}
 
 export interface IFieldsItem {
   id?: string;

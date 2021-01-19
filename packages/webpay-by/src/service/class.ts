@@ -1,14 +1,14 @@
 import {
-  _form_fields,
   _IFormFields,
   IFieldsItem,
   IFormFields,
   IWebPayInitial,
   TFieldsItems,
-} from "../types/index";
+} from "../types";
 
 import { isObject, omit, pick } from "./utils";
 import { checkSign, sign } from "./functions";
+import { _form_fields } from "../defaults/fields";
 
 enum ErrorMsg {
   MISSING_PARAMS = "missing required params",

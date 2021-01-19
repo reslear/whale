@@ -1,4 +1,5 @@
 import { WebPayForm, checkSign } from "../../src";
+import dayjs from "dayjs";
 
 const start = async (baby?: string) => {
   const webpay = new WebPayForm({
@@ -6,6 +7,8 @@ const start = async (baby?: string) => {
       wsb_storeid: "614441705",
       wsb_store: "Название Вашего магазина",
       wsb_order_num: "ORDER-12345678",
+      wsb_startsessdatetime: dayjs().add(20, "m").format(),
+      wsb_startsesstime: dayjs().add(20, "m").unix(),
     },
     items: [
       {
@@ -29,7 +32,7 @@ const start = async (baby?: string) => {
   console.log(result);
 };
 
-//start();
+start();
 
 const res = checkSign(
   {
