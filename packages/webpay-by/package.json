@@ -1,6 +1,6 @@
 {
   "name": "webpay-by",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Form fields api for Belarus payment system Webpay.by",
   "author": "reslear <reslear@gmail.com>",
   "homepage": "https://github.com/reslear/whale/tree/main/packages/webpay-by",

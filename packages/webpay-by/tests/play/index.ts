@@ -1,4 +1,4 @@
-import { WebPayForm, checkSign } from "../../src";
+import { WebPayForm, checkSign } from "../../dist";
 import dayjs from "dayjs";
 
 const start = async (baby?: string) => {
