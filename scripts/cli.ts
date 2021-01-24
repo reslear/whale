@@ -5,6 +5,11 @@ import { promises as fsp } from "fs";
 import fg from "fast-glob";
 
 import validateNpmPackageName from "validate-npm-package-name";
+import child_process from "child_process";
+import chalk from "chalk";
+import util from "util";
+
+const exec = util.promisify(child_process.exec);
 
 export const checkPackageName = async (val: string) => {
   const isNpm = validateNpmPackageName(val).validForNewPackages;
@@ -45,7 +50,14 @@ const init = async () => {
     })
   );
 
-  // TODO: npm install
+  console.log(chalk.yellow(`Install npm deps...`));
+
+  const { stdout, stderr } = await exec(`npm --prefix ${pkgPath} i`);
+
+  // console.log(`stdout: ${stdout}`);
+  // console.log(`stderr: ${stderr}`);
+
+  console.log(chalk.green(`✅ Done, link: ${chalk.underline(pkgPath)}`));
 };
 
 init();

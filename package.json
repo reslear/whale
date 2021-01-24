@@ -22,6 +22,7 @@
     "new": "ts-node scripts/cli.ts"
   },
   "dependencies": {
+    "chalk": "^4.1.0",
     "fast-glob": "^3.2.4"
   },
   "workspaces": [
