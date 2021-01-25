@@ -1,0 +1,43 @@
+{
+  "name": "vue-naked-components",
+  "version": "0.0.0",
+  "description": "headless vue components for custom styling like tailwind classes",
+  "author": "reslear <reslear@gmail.com>",
+  "homepage": "https://github.com/reslear/whale/tree/main/packages/vue-naked-components",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reslear/whale.git"
+  },
+  "scripts": {
+    "dev": "tsnd --respawn examples/express/server.ts",
+    "build": "tsup src/index.ts --format esm,cjs --dts --legacy-output",
+    "clean": "rm -rf dist",
+    "deploy": "npm run clean && npm run build && npm version patch && npm publish --access public"
+  },
+  "bugs": {
+    "url": "https://github.com/reslear/whale/issues"
+  },
+  "devDependencies": {
+    "@nuxt/types": "^2.14.12",
+    "@nuxt/typescript-build": "^2.0.4",
+    "ts-node": "9.1.1",
+    "ts-node-dev": "^1.1.1",
+    "tsup": "3.12.0",
+    "typescript": "4.1.3"
+  },
+  "dependencies": {
+    "@nuxt/components": "^1.2.5",
+    "nuxt": "^2.14.12"
+  }
+}
