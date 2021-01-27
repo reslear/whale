@@ -1,0 +1,8 @@
+[
+  {
+    "name": "index",
+    "path": "/",
+    "component": "/Volumes/dev/GitHub/whale/packages/vue-naked-components/test/play/nuxt/pages/index.vue",
+    "chunkName": "pages/index"
+  }
+]
