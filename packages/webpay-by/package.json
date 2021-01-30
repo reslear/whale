@@ -40,7 +40,7 @@
     "prettier": "2.2.1",
     "ts-node": "9.1.1",
     "ts-node-dev": "^1.1.1",
-    "tsup": "3.12.0",
+    "tsup": "3.12.1",
     "turndown": "^7.0.0",
     "typescript": "4.1.3"
   },
