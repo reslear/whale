@@ -2,4 +2,4 @@ dist
 ._*
 .DS_Store
 node_modules
-.nuxt
+.nuxt/
